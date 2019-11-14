@@ -4,7 +4,7 @@
     <div>
       <b-form class="form-container">
         <b-form-group>
-          <b-form-input v-model="form.name" required placeholder="Enter band name"></b-form-input>
+          <b-form-input v-model="form.name" required placeholder="Enter band name" name></b-form-input>
         </b-form-group>
 
         <b-form-group label="Enter band description">
@@ -22,13 +22,7 @@
         </b-form-group>
 
         <b-form-group id="input-group-3" label="Formed in year:">
-          <b-form-select
-            placeholder="hello"
-            id="input-3"
-            v-model="form.formed"
-            :options="years"
-            required
-          ></b-form-select>
+          <b-form-select id="input-3" v-model="form.formed" :options="years" required></b-form-select>
         </b-form-group>
 
         <b-button type="submit" variant="primary">Submit</b-button>
@@ -37,13 +31,13 @@
     </div>
     <div id="preview" class="form-container">
       <h5>Preview</h5>
-      <p>Band name:{{ form.name }}</p>
+      <p bandName>Band name:{{ form.name }}</p>
       <p>Description: {{ form.description }}</p>
       <p>Genre:</p>
       <ul>
         <li v-for="genre in form.genre" v-bind:key="genre">{{ genre }}</li>
       </ul>
-      <p>Formed in year: {{ form.formed}}</p>
+      <p>Formed in year: {{ form.formed }}</p>
     </div>
   </div>
 </template>
@@ -52,6 +46,7 @@
 export default {
   data() {
     return {
+      name1: '',
       form: {
         name: '',
         description: '',

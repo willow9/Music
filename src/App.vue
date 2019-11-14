@@ -1,12 +1,25 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/about">About</router-link> |
-      <router-link to="/add">Add band</router-link>
+      <router-link to="/about">About</router-link> | <router-link to="/add">Add band</router-link> |
+      <router-link to="/test">Test</router-link>
     </div>
     <router-view />
   </div>
 </template>
+
+
+<script>
+//  import AddBand from './views/AddBand'
+// export default {
+//   name: 'app',
+//   components: {
+//     // 'add-band': AddBand,
+//   }
+
+// }
+//
+</script>
 
 <style scoped>
 #app {
