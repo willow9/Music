@@ -34,10 +34,10 @@ describe('AddBand.vue', () => {
     const wrapper = mount(AddBand, {
       localVue
     });
-    const n = wrapper.find('[name]');
-    n.element.value = 'you';
-    n.trigger('input');
-    expect(wrapper.find('[bandName]').text()).toBe('Band name:you');
+    const name = wrapper.find('[name]');
+    name.element.value = 'you';
+    name.trigger('input');
+    expect(wrapper.find('p:nth-of-type(1)').text()).toBe('Band name:you');
   });
 
   it('add band name to data', () => {
