@@ -46,6 +46,7 @@
               <b-form-select v-model="form.formed" :options="years" required></b-form-select>
             </b-form-group>
 
+            <b-button variant="primary">Preview</b-button>
             <b-button type="submit" variant="primary">Submit</b-button>
             <b-button type="reset" variant="danger">Reset</b-button>
           </b-form>
@@ -53,16 +54,26 @@
       </b-row>
     </b-container>
 
-    <!-- <div id="preview" class="form-container">
-      <h5>Preview</h5>
-      <p bandName>Band name:{{ form.name }}</p>
-      <p>Description: {{ form.description }}</p>
-      <p>Genre:</p>
-      <ul>
-        <li v-for="genre in form.genre" v-bind:key="genre">{{ genre }}</li>
-      </ul>
-      <p>Formed in year: {{ form.formed }}</p>
-    </div> -->
+    <b-container>
+      <b-row>
+         <b-col>
+          <img src="..." alt="..." class="img-thumbnail">
+        </b-col>
+        <b-col>
+          <div>
+            <h5>Preview</h5>
+            <p bandName>Band name:{{ form.name }}</p>
+            <p>Description: {{ form.description }}</p>
+            <p>Genre:</p>
+            <ul>
+              <li v-for="genre in form.genre" v-bind:key="genre">{{ genre }}</li>
+            </ul>
+            <p>Formed in year: {{ form.formed }}</p>
+          </div>
+        </b-col>
+       
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -116,15 +127,14 @@ export default {
 
 <style scoped>
 .container {
-  align-self: center;
-  padding-top: 30px;
-  margin: 0 auto;
+  padding: 10px;
+  margin: 20px auto;
   border: 1px dotted #ccc;
 }
 
-.img-fluid {
+/* .img-fluid {
   height: 75%;
-}
+} */
 
 .form-container {
   max-width: 800px;
@@ -154,11 +164,10 @@ export default {
 .image-input {
   display: block;
   width: 100%;
-  height: 90%;
+  height: 100%;
   cursor: pointer;
   background-size: cover;
   background-position: center center;
-  background-color: aqua;
 }
 .placeholder {
   background: #f0f0f0;
@@ -176,5 +185,9 @@ export default {
 }
 .file-input {
   display: none;
+}
+
+.btn {
+  margin-left: 10px;
 }
 </style>
