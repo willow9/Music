@@ -6,9 +6,9 @@
         <b-col>
           <!-- <b-img class="preview2" :src="url"></b-img>
           <input type="file" @change="onFileChange" variant="primary" /> -->
-          <div>
+          <!-- <div>
             <image-input v-model="imageData" />
-          </div>
+          </div> -->
 
           <div class="image-input" :style="{ 'background-image': `url(${imageData})` }" @click="chooseImage">
             <span v-if="!imageData" class="placeholder">
@@ -55,12 +55,21 @@
     </b-container>
 
     <b-container>
+      <h1>{{ form.name }}</h1>
       <b-row>
-         <b-col>
-          <img src="..." alt="..." class="img-thumbnail">
-        </b-col>
         <b-col>
-          <div>
+          <div class="image-input">
+            <b-img
+              :src="imageData"
+              :style="{ 'width': `500px`, 'height': '400px' }"
+              alt="Responsive image"
+            ></b-img>
+            <!-- <b-img src="https://picsum.photos/id/0/5616/3744" fluid alt="Responsive image"></b-img> -->
+          </div>
+        </b-col>
+
+        <b-col>
+          <div id="preview">
             <h5>Preview</h5>
             <p bandName>Band name:{{ form.name }}</p>
             <p>Description: {{ form.description }}</p>
@@ -71,7 +80,6 @@
             <p>Formed in year: {{ form.formed }}</p>
           </div>
         </b-col>
-       
       </b-row>
     </b-container>
   </div>
@@ -105,13 +113,13 @@ export default {
     onSelectFile() {
       const input = this.$refs.fileInput;
       const files = input.files;
+
       if (files && files[0]) {
         const reader = new FileReader();
         reader.onload = e => {
           this.imageData = e.target.result;
         };
         reader.readAsDataURL(files[0]);
-        this.$emit('input', files[0]);
       }
     }
   },
@@ -139,7 +147,7 @@ export default {
 .form-container {
   max-width: 800px;
   margin: 0 auto;
-  padding-bottom: 60px;
+  /* padding-bottom: 60px; */
 }
 
 #preview {
@@ -163,11 +171,12 @@ export default {
 
 .image-input {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 500px;
+  height: 400px;
   cursor: pointer;
   background-size: cover;
   background-position: center center;
+  object-fit: contain;
 }
 .placeholder {
   background: #f0f0f0;
@@ -185,8 +194,11 @@ export default {
 }
 .file-input {
   display: none;
+  object-fit: contain;
 }
-
+#imagePreview {
+  background: #f0f0f0;
+}
 .btn {
   margin-left: 10px;
 }
