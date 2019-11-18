@@ -4,12 +4,6 @@
     <b-container>
       <b-row>
         <b-col>
-          <!-- <b-img class="preview2" :src="url"></b-img>
-          <input type="file" @change="onFileChange" variant="primary" /> -->
-          <!-- <div>
-            <image-input v-model="imageData" />
-          </div> -->
-
           <div class="image-input" :style="{ 'background-image': `url(${imageData})` }" @click="chooseImage">
             <span v-if="!imageData" class="placeholder">
               Choose an Image
@@ -46,7 +40,7 @@
               <b-form-select v-model="form.formed" :options="years" required></b-form-select>
             </b-form-group>
 
-            <b-button variant="primary">Preview</b-button>
+            <b-button @click="preview = !preview" variant="primary">Preview</b-button>
             <b-button type="submit" variant="primary">Submit</b-button>
             <b-button type="reset" variant="danger">Reset</b-button>
           </b-form>
@@ -54,33 +48,18 @@
       </b-row>
     </b-container>
 
-    <b-container>
+    <b-container v-if="preview" class="preview">
       <h1>{{ form.name }}</h1>
-      <b-row>
-        <b-col>
-          <div class="image-input">
-            <b-img
-              :src="imageData"
-              :style="{ 'width': `500px`, 'height': '400px' }"
-              alt="Responsive image"
-            ></b-img>
-            <!-- <b-img src="https://picsum.photos/id/0/5616/3744" fluid alt="Responsive image"></b-img> -->
-          </div>
-        </b-col>
+      <b-img :src="imageData"></b-img>
 
-        <b-col>
-          <div id="preview">
-            <h5>Preview</h5>
-            <p bandName>Band name:{{ form.name }}</p>
-            <p>Description: {{ form.description }}</p>
-            <p>Genre:</p>
-            <ul>
-              <li v-for="genre in form.genre" v-bind:key="genre">{{ genre }}</li>
-            </ul>
-            <p>Formed in year: {{ form.formed }}</p>
-          </div>
-        </b-col>
-      </b-row>
+      <div>
+        <p>Description: {{ form.description }}</p>
+        <ul>
+          Genre:
+          <li v-for="genre in form.genre" v-bind:key="genre">{{ genre }}</li>
+        </ul>
+        <p>Formed in year: {{ form.formed }}</p>
+      </div>
     </b-container>
   </div>
 </template>
@@ -89,9 +68,9 @@
 export default {
   data() {
     return {
+      preview: false,
       imageData: null,
-      file: null,
-      url: null,
+
       form: {
         name: '',
         description: '',
@@ -102,10 +81,6 @@ export default {
     };
   },
   methods: {
-    onFileChange(e) {
-      const file = e.target.files[0];
-      this.url = URL.createObjectURL(file);
-    },
     chooseImage() {
       this.$refs.fileInput.click();
     },
@@ -138,35 +113,7 @@ export default {
   padding: 10px;
   margin: 20px auto;
   border: 1px dotted #ccc;
-}
-
-/* .img-fluid {
-  height: 75%;
-} */
-
-.form-container {
-  max-width: 800px;
-  margin: 0 auto;
-  /* padding-bottom: 60px; */
-}
-
-#preview {
-  border: 1px dotted #ccc;
-  text-align: left;
-  padding: 10px;
-}
-
-.image-preview2 {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  padding: 20px;
-}
-.preview2 {
-  width: 400px;
-  height: 300px;
-  background-color: rgb(90, 87, 87);
-  border: 1px solid #ddd;
-  padding: 5px;
-  margin-bottom: 5px;
+  height: fit-content;
 }
 
 .image-input {
@@ -178,6 +125,7 @@ export default {
   background-position: center center;
   object-fit: contain;
 }
+
 .placeholder {
   background: #f0f0f0;
   width: 100%;
@@ -189,6 +137,7 @@ export default {
   font-size: 18px;
   font-family: Helvetica;
 }
+
 .placeholder:hover {
   background: #e0e0e0;
 }
@@ -196,10 +145,32 @@ export default {
   display: none;
   object-fit: contain;
 }
-#imagePreview {
-  background: #f0f0f0;
-}
+
 .btn {
   margin-left: 10px;
+}
+
+.preview {
+  border: 1px dotted #ccc;
+  text-align: justify;
+  padding: 10px;
+  min-height: 400px;
+}
+
+.preview img {
+  float: left;
+  margin: 10px;
+  width: 300px;
+  height: 300px;
+  background: gray;
+}
+
+.preview h1 {
+  text-align: center;
+}
+
+.preview li {
+  display: inline;
+  margin: 0 5px 0 0;
 }
 </style>
