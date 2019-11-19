@@ -4,8 +4,8 @@
     <b-container>
       <b-row>
         <b-col>
-          <div class="image-input" :style="{ 'background-image': `url(${imageData})` }" @click="chooseImage">
-            <span v-if="!imageData" class="placeholder">
+          <div class="image-input" :style="{ 'background-image': `url(${form.imageData})` }" @click="chooseImage">
+            <span v-if="!form.imageData" class="placeholder">
               Choose an Image
             </span>
             <input class="file-input" ref="fileInput" type="file" @input="onSelectFile" />
@@ -41,7 +41,7 @@
             </b-form-group>
 
             <b-button @click="preview = !preview" variant="primary">Preview</b-button>
-            <b-button type="submit" variant="primary">Submit</b-button>
+            <b-button @click.prevent="post" type="submit" variant="primary">Submit</b-button>
             <b-button type="reset" variant="danger">Reset</b-button>
           </b-form>
         </b-col>
@@ -50,7 +50,7 @@
 
     <b-container v-if="preview" class="preview">
       <h1>{{ form.name }}</h1>
-      <b-img :src="imageData"></b-img>
+      <b-img :src="form.imageData"></b-img>
 
       <div>
         <p>Description: {{ form.description }}</p>
@@ -69,13 +69,14 @@ export default {
   data() {
     return {
       preview: false,
-      imageData: null,
+      // imageData: null,
 
       form: {
         name: '',
         description: '',
         genre: [],
-        formed: ''
+        formed: '',
+        imageData: null
       },
       years: []
     };
@@ -92,10 +93,18 @@ export default {
       if (files && files[0]) {
         const reader = new FileReader();
         reader.onload = e => {
-          this.imageData = e.target.result;
+          this.form.imageData = e.target.result;
         };
         reader.readAsDataURL(files[0]);
       }
+    },
+
+    post() {
+      this.$http.post('https://vue-blog236.firebaseio.com/bands.json', this.form).then(data => {
+        console.log(data);
+        this.form.imageData = null;
+        this.form.name = ''
+      });
     }
   },
   created() {
