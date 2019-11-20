@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import axios from "axios";
+import db from "./../../firebase/firebaseInit";
 
 const state = {
   bands: []
@@ -20,15 +21,19 @@ const actions = {
     commit("newBand", response.data);
   },
 
-  async fetchBands({ commit }) {
-    const response = await axios.get(
-      "https://vue-blog236.firebaseio.com/bands.json"
-    );
+  fetchBands({ commit }) {
+    // const response = await axios.get(
+    //   "https://vue-blog236.firebaseio.com/bands.json"
+    // );
+    // const bands = [];
+    // Object.keys(response.data).forEach(key => {
+    //   let value = response.data[key];
+    //   bands.push(value);
+    // });
     const bands = [];
-    Object.keys(response.data).forEach(key => {
-      let value = response.data[key];
-      bands.push(value);
-    });
+    db.collection("bands")
+      .get()
+      .then(response => response.forEach(doc => bands.push(doc.data())));
 
     commit("setBands", bands);
   }
