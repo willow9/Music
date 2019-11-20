@@ -4,18 +4,32 @@
     <b-container>
       <b-row>
         <b-col>
-          <div class="image-input" :style="{ 'background-image': `url(${form.imageData})` }" @click="chooseImage">
+          <div
+            class="image-input"
+            :style="{ 'background-image': `url(${form.imageData})` }"
+            @click="chooseImage"
+          >
             <span v-if="!form.imageData" class="placeholder">
               Choose an Image
             </span>
-            <input class="file-input" ref="fileInput" type="file" @input="onSelectFile" />
+            <input
+              class="file-input"
+              ref="fileInput"
+              type="file"
+              @input="onSelectFile"
+            />
           </div>
         </b-col>
 
         <b-col>
           <b-form>
             <b-form-group>
-              <b-form-input v-model="form.name" required placeholder="Enter band name" name></b-form-input>
+              <b-form-input
+                v-model="form.name"
+                required
+                placeholder="Enter band name"
+                name
+              ></b-form-input>
             </b-form-group>
 
             <b-form-group label="Enter band description">
@@ -30,18 +44,28 @@
               <b-form-checkbox-group v-model="form.genre">
                 <b-form-checkbox value="rock">Rock</b-form-checkbox>
                 <b-form-checkbox value="gothic">Gothic</b-form-checkbox>
-                <b-form-checkbox value="black">Black/Death metal</b-form-checkbox>
+                <b-form-checkbox value="black"
+                  >Black/Death metal</b-form-checkbox
+                >
                 <b-form-checkbox value="heavy">Heavy metal</b-form-checkbox>
                 <b-form-checkbox value="other">Other</b-form-checkbox>
               </b-form-checkbox-group>
             </b-form-group>
 
             <b-form-group label="Formed in year:">
-              <b-form-select v-model="form.formed" :options="years" required></b-form-select>
+              <b-form-select
+                v-model="form.formed"
+                :options="years"
+                required
+              ></b-form-select>
             </b-form-group>
 
-            <b-button @click="preview = !preview" variant="primary">Preview</b-button>
-            <b-button @click.prevent="post" type="submit" variant="primary">Submit</b-button>
+            <b-button @click="preview = !preview" variant="primary"
+              >Preview</b-button
+            >
+            <b-button @click.prevent="post" type="submit" variant="primary"
+              >Submit</b-button
+            >
             <b-button type="reset" variant="danger">Reset</b-button>
           </b-form>
         </b-col>
@@ -65,6 +89,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -72,10 +97,10 @@ export default {
       // imageData: null,
 
       form: {
-        name: '',
-        description: '',
+        name: "",
+        description: "",
         genre: [],
-        formed: '',
+        formed: "",
         imageData: null
       },
       years: []
@@ -85,6 +110,7 @@ export default {
     chooseImage() {
       this.$refs.fileInput.click();
     },
+    ...mapActions(["addBand", "fetchBands"]),
 
     onSelectFile() {
       const input = this.$refs.fileInput;
@@ -99,14 +125,20 @@ export default {
       }
     },
 
+    clearForm() {
+      this.form.name = "";
+      this.form.description = "";
+      this.form.genre = [];
+      this.form.formed = "";
+      this.form.imageData = null;
+    },
+
     post() {
-      this.$http.post('https://vue-blog236.firebaseio.com/bands.json', this.form).then(data => {
-        console.log(data);
-        this.form.imageData = null;
-        this.form.name = ''
-      });
+      this.addBand(this.form);
+      this.clearForm();
     }
   },
+
   created() {
     let years = [];
     for (let i = 1975; i <= new Date().getFullYear(); i++) {
