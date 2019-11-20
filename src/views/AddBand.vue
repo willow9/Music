@@ -214,4 +214,5 @@ export default {
   display: inline;
   margin: 0 5px 0 0;
 }
+
 </style>

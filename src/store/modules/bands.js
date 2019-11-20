@@ -20,41 +20,15 @@ const actions = {
     commit("newBand", response.data);
   },
 
-   fetchBands({ commit }) {
-    // const response = await axios.get(
-    //   "https://vue-blog236.firebaseio.com/bands.json"
-    // );
-    // const bands = [];
-    // Object.keys(response.data).forEach(key => {
-    //   let value = response.data[key];
-    //   bands.push(value);
-    // });
-     const bands = [{
-        name: "metalica",
-        genre: 'rock', 
-        description:' very good'
-    },
-    {
-        name: "metalica",
-        genre: 'rock', 
-        description:' Lorem ipsum dolor sit amet, '
-    },
-    {
-        name: "metalica",
-        genre: 'rock', 
-        description:' very good'
-    },
-    {
-        name: "metalica",
-        genre: 'rock', 
-        description:' very good'
-    },
-    {
-        name: "metalica",
-        genre: 'rock', 
-        description:' very good'
-    },
-]
+  async fetchBands({ commit }) {
+    const response = await axios.get(
+      "https://vue-blog236.firebaseio.com/bands.json"
+    );
+    const bands = [];
+    Object.keys(response.data).forEach(key => {
+      let value = response.data[key];
+      bands.push(value);
+    });
 
     commit("setBands", bands);
   }
