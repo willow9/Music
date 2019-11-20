@@ -35,6 +35,7 @@
   background-color: #294456;
   position: sticky;
   top:0;
+  z-index: 1;
   
 }
 
