@@ -135,7 +135,7 @@ export default {
 
     post() {
       this.addBand(this.form);
-      this.clearForm();
+      // this.clearForm();
     }
   },
 

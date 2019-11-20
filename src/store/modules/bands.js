@@ -14,26 +14,29 @@ const actions = {
   async addBand({ commit }, band) {
     const response = await axios.post(
       "https://vue-blog236.firebaseio.com/bands.json",
-
-      JSON.stringify(band)
+      band
     );
-
+    console.log(response.data);
     commit("newBand", response.data);
   },
 
   async fetchBands({ commit }) {
     const response = await axios.get(
-        "https://vue-blog236.firebaseio.com/bands.json"
+      "https://vue-blog236.firebaseio.com/bands.json"
     );
-    console.log(response.data)
+    const bands = [];
+    Object.keys(response.data).forEach(key => {
+      let value = response.data[key];
+      bands.push(value);
+    });
 
-    commit("setBands", response.data);
-  },
+    commit("setBands", bands);
+  }
 };
 
 const mutations = {
-  newBand: (state, band) => state.bands.unshift(band),
-  setBands: (state, bands) => (state.bands = bands),
+  newBand: (state, band) => state.bands.shift(band),
+  setBands: (state, bands) => (state.bands = bands)
 };
 
 export default {

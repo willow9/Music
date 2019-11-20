@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link to="/">About</router-link> |
       <router-link to="/add">Add band</router-link> |
-      <router-link to="/test">Test</router-link>
+      <router-link to="/test">Bands List</router-link>
     </div>
     <router-view />
   </div>
