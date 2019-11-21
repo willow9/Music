@@ -6,10 +6,10 @@
         <b-col>
           <div
             class="image-input"
-            :style="{ 'background-image': `url(${form.imageData})` }"
+            :style="{ 'background-image': `url(${imageData})` }"
             @click="chooseImage"
           >
-            <span v-if="!form.imageData" class="placeholder">
+            <span v-if="!imageData" class="placeholder">
               Choose an Image
             </span>
             <input
@@ -74,7 +74,7 @@
 
     <b-container v-if="preview" class="preview">
       <h1>{{ form.name }}</h1>
-      <b-img :src="form.imageData"></b-img>
+      <b-img :src="imageData"></b-img>
 
       <div>
         <p>Description: {{ form.description }}</p>
@@ -94,14 +94,14 @@ export default {
   data() {
     return {
       preview: false,
-      // imageData: null,
+      imageData: null,
 
       form: {
         name: "",
         description: "",
         genre: [],
         formed: "",
-        imageData: null
+        rawImage: null,
       },
       years: []
     };
@@ -119,9 +119,11 @@ export default {
       if (files && files[0]) {
         const reader = new FileReader();
         reader.onload = e => {
-          this.form.imageData = e.target.result;
+          this.imageData = e.target.result;
         };
         reader.readAsDataURL(files[0]);
+        this.form.rawImage = files[0];
+        console.log(this.form.rawImage);
       }
     },
 
@@ -130,7 +132,8 @@ export default {
       this.form.description = "";
       this.form.genre = [];
       this.form.formed = "";
-      this.form.imageData = null;
+      this.form.rowImage = null;
+      this.imageData = null;
     },
 
     post() {
@@ -214,5 +217,4 @@ export default {
   display: inline;
   margin: 0 5px 0 0;
 }
-
 </style>
