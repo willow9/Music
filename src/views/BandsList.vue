@@ -1,10 +1,21 @@
 <template>
   <div>
     <div class="cards-wrapper">
+      <b-form-input
+        v-model="search"
+        placeholder="Enter band name"
+      ></b-form-input>
+      <b-form-checkbox-group v-model="searchGenre" class="checkbox-label">
+        <b-form-checkbox value="rock">Rock</b-form-checkbox>
+        <b-form-checkbox value="gothic">Gothic</b-form-checkbox>
+        <b-form-checkbox value="black">Black/Death metal</b-form-checkbox>
+        <b-form-checkbox value="heavy">Heavy metal</b-form-checkbox>
+        <b-form-checkbox value="other">Other</b-form-checkbox>
+      </b-form-checkbox-group>
       <h1>Bands</h1>
       <b-card-group columns>
         <b-card
-          v-for="band in allBands"
+          v-for="band in filterBands"
           :key="band.index"
           img-alt="Image"
           img-top
@@ -34,21 +45,33 @@ export default {
   name: "BandsList",
 
   data() {
-    return {};
+    return {
+      search: "",
+      searchGenre: []
+    };
   },
 
   methods: {
-    ...mapActions(["fetchBands"]),
-
-    listBands() {}
+    ...mapActions(["fetchBands"])
   },
-  computed: mapGetters(["allBands"]),
-
+  computed: {
+    ...mapGetters(["allBands"]),
+    filterBands() {
+      return this.allBands.filter(band => {
+        return (
+          band.name.match(this.search) &&
+          (this.searchGenre.some(item => band.genre.includes(item)) ||
+            this.searchGenre.length == 0)
+        );
+      });
+    }
+  },
   created() {
     this.fetchBands();
   }
 };
 </script>
+
 <style scoped>
 .cards-wrapper {
   background-color: #294456;
@@ -70,5 +93,19 @@ export default {
 
 .cards-wrapper p {
   text-align: left;
+}
+
+.checkbox-label {
+  color: aliceblue;
+}
+
+@media (min-width: 1300px) {
+  .card-columns {
+    column-count: 5;
+
+    column-gap: 1.25rem;
+    orphans: 1;
+    widows: 1;
+  }
 }
 </style>
