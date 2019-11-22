@@ -27,7 +27,7 @@ const actions = {
       })
       .then(key => {
         const file = band.rawImage;
-        const fileName = band.rawImage.name;
+        const fileName = file.name;
         const extension = fileName.slice(fileName.lastIndexOf("."));
         return firebase
           .storage()

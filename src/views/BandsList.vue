@@ -8,10 +8,11 @@
           :key="band.index"
           img-alt="Image"
           img-top
-          img-src="https://placekitten.com/500/350"
+          :img-src="band.imageUrl"
         >
           <b-card-text>
             <h3>{{ band.name }}</h3>
+
             <ul>
               Genre:
               <li v-for="genre in band.genre" v-bind:key="genre">
