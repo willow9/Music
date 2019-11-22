@@ -13,22 +13,40 @@ const getters = {
 
 const actions = {
   addBand({ commit }, band) {
-    // const response = await axios.post(
-    //   "https://vue-blog236.firebaseio.com/bands.json",
-    //   band
-    // );
-    // db.collection("bands")
-    //   .doc()
-    //   .set(band)
-    //   .then(commit("newBand", band))
-    //   .catch(error => console.log(error));
+    
+
+    let key;
 
     firebase
       .database()
       .ref("bands")
       .push(band)
-      .then(commit("newBand", band))
-      .catch(error => console.log(error));
+      .then(data => {
+        key = data.key;
+        return key;
+      })
+      .then(key => {
+        const file = band.rawImage;
+        const fileName = band.rawImage.name;
+        const extension = fileName.slice(fileName.lastIndexOf("."));
+        return firebase
+          .storage()
+          .ref("bands/" + key + "." + extension)
+          .put(file);
+      })
+      .then(snapshot => {
+        snapshot.ref.getDownloadURL().then(downloadUrl => {
+          firebase
+            .database()
+            .ref("bands")
+            .child(key)
+            .update({ imageUrl: downloadUrl })
+            .then(() => {
+              commit("newBand", {...band, id: key, imageUrl:downloadUrl})
+            });
+        });
+      });
+
   },
 
   fetchBands({ commit }) {
