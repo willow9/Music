@@ -3,7 +3,6 @@ import HelloWorld from '@/components/HelloWorld.vue';
 import AddBand from '@/views/AddBand.vue';
 import BootstrapVue from 'bootstrap-vue';
 // import About from '@/views/About.vue';
-import FormSubmitter from '@/views/FormSubmitter.vue';
 // import Vue from 'vue';
 
 // config.silent = true;
@@ -53,22 +52,4 @@ describe('AddBand.vue', () => {
   });
 });
 
-// describe('FormSubmitter', () => {
-//   it('reveals a notification when submitted', async () => {
-//     const wrapper = shallowMount(FormSubmitter);
-
-//     wrapper.find('[data-username]').setValue('alice');
-//     // wrapper.find('form').trigger('submit.prevent');
-//     // await wrapper.vm.$nextTick();
-
-//     // expect(wrapper.find('.message').text()).toBe('Thank you for your submission, alice.');
-//   });
-// });
-
-// describe('About.vue', () => {
-//   it('page contains h1', () => {
-//     const wrapper = shallowMount(About);
-//     expect(wrapper.contains('h1')).toBe(true);
-
-//   });
-// });
+addEventListener

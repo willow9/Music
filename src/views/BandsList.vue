@@ -58,11 +58,13 @@ export default {
     ...mapGetters(["allBands"]),
     filterBands() {
       return this.allBands.filter(band => {
+        if(band.genre!=undefined){
         return (
           band.name.match(this.search) &&
           (this.searchGenre.some(item => band.genre.includes(item)) ||
             this.searchGenre.length == 0)
         );
+      } else return band.name.match(this.search)
       });
     }
   },

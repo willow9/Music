@@ -1,9 +1,9 @@
 <template>
   <div class="about">
     <div class="centered-content">
-      <h1>This is an about page</h1>
+      <h1>Share great music bands</h1>
       <p>
-        tis ligula, eget egestas libero turpis vel mi. Nunc nulla. Fusce risus
+        Here You can add information about your favourite bands
       </p>
     </div>
   </div>

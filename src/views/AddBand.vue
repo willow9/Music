@@ -63,7 +63,11 @@
             <b-button @click="preview = !preview" variant="primary"
               >Preview</b-button
             >
-            <b-button @click.prevent="post" type="submit" variant="primary"
+            <b-button
+              @click.prevent="post"
+              :disabled="!isFormValid"
+              type="submit"
+              variant="primary"
               >Submit</b-button
             >
             <b-button type="reset" variant="danger">Reset</b-button>
@@ -101,10 +105,15 @@ export default {
         description: "",
         genre: [],
         formed: "",
-        rawImage: null,
+        rawImage: null
       },
       years: []
     };
+  },
+  computed: {
+    isFormValid() {
+      return this.form.name != "" && this.form.genre != [] && this.form.formed != "";
+    }
   },
   methods: {
     chooseImage() {
@@ -138,7 +147,7 @@ export default {
 
     post() {
       this.addBand(this.form);
-      // this.clearForm();
+      this.clearForm();
     }
   },
 
