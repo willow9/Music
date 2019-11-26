@@ -2,7 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/add">Add band</router-link> |
+      <router-link to="/add">Add Band</router-link> |
       <router-link to="/test">Bands List</router-link>
     </div>
     <router-view />
@@ -11,14 +11,17 @@
 
 <script>
 //  import AddBand from './views/AddBand'
-// export default {
-//   name: 'app',
-//   components: {
-//     // 'add-band': AddBand,
-//   }
-
-// }
-//
+export default {
+  name: "app",
+  components: {
+    // 'add-band': AddBand,
+  },
+  data() {
+    return {
+     
+    };
+  }
+};
 </script>
 
 <style>
@@ -27,16 +30,14 @@
 
   text-align: center;
   color: #2c3e50;
-  
 }
 
 #nav {
   padding: 30px;
   background-color: #294456;
   position: sticky;
-  top:0;
+  top: 0;
   z-index: 1;
-  
 }
 
 #nav a {

@@ -42,7 +42,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "BandsList",
 
   data() {
     return {

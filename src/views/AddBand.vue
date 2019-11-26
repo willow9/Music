@@ -112,7 +112,8 @@ export default {
   },
   computed: {
     isFormValid() {
-      return this.form.name != "" && this.form.genre != [] && this.form.formed != "";
+      return this.form.name !== "" && this.form.genre.length>0 && this.form.formed !== "";
+     
     }
   },
   methods: {
@@ -132,7 +133,6 @@ export default {
         };
         reader.readAsDataURL(files[0]);
         this.form.rawImage = files[0];
-        console.log(this.form.rawImage);
       }
     },
 
