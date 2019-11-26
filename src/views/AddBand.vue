@@ -27,8 +27,7 @@
               <b-form-input
                 v-model="form.name"
                 required
-                placeholder="Enter band name"
-                name
+                placeholder="Enter band name" name
               ></b-form-input>
             </b-form-group>
 
@@ -112,8 +111,11 @@ export default {
   },
   computed: {
     isFormValid() {
-      return this.form.name !== "" && this.form.genre.length>0 && this.form.formed !== "";
-     
+      return (
+        this.form.name !== "" &&
+        this.form.genre.length > 0 &&
+        this.form.formed !== ""
+      );
     }
   },
   methods: {
