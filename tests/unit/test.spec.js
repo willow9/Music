@@ -35,16 +35,6 @@ describe("AddBand.vue", () => {
   it("when form is filled, submit button is enabled", () => {
     const wrapper = mount(AddBand, { localVue });
 
-    wrapper.vm.form.name = "band name";
-    wrapper.vm.form.genre = ["rock"];
-    wrapper.vm.form.formed = 1989;
-
-    expect(wrapper.vm.isFormValid).toBe(true);
-  });
-
-  it("name field in data properties are updated when user fills name field in form", () => {
-    const wrapper = mount(AddBand, { localVue });
-
     const name = wrapper.find('input[type="text"]');
     name.element.value = "NiceName";
     name.trigger("input");
@@ -57,18 +47,26 @@ describe("AddBand.vue", () => {
 
     expect(wrapper.vm.form.name).toBe("NiceName");
     expect(wrapper.vm.form.genre).toHaveLength(1);
-    expect(wrapper.vm.form.formed).toBeGreaterThan(0)
+    expect(wrapper.vm.form.formed).toBeGreaterThan(0);
     expect(wrapper.vm.isFormValid).toBe(true);
   });
 
-  // it("checkbox field in data properties are updated when user select band genre", () => {
-  //   const wrapper = shallowMount(AddBand, { localVue });
-  //   const genre = wrapper.find("b-form-checkbox-stub:nth-of-type(1)");
-  //   name.element.value = "NiceName";
-  //   // console.log(wrapper.html())
-  //   name.trigger("input");
-  //   // wrapper.vm.$nextTick();
+  it("preview button toggles preview", () => {
+    const wrapper = mount(AddBand, { localVue });
 
-  //   // expect(wrapper.vm.form.name).toBe("NiceName");
-  // });
+    wrapper
+      .findAll("button")
+      .filter(node => node.text().match(/Preview/))
+      .at(0)
+      .trigger("click");
+
+    expect(wrapper.vm.preview).toBe(true);
+  });
+
+  it("form has list of years for band creation year selection", () => {
+    const wrapper = mount(AddBand, { localVue });
+    const options = wrapper.find("select").findAll("option");
+    expect(options.length).toBeGreaterThan(1)
+   
+  });
 });

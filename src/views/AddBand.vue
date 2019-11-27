@@ -142,7 +142,7 @@ export default {
       this.form.name = "";
       this.form.description = "";
       this.form.genre = [];
-      this.form.formed = "";
+      this.form.formed = 0;
       this.form.rowImage = null;
       this.imageData = null;
     },
