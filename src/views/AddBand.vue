@@ -122,7 +122,7 @@ export default {
     chooseImage() {
       this.$refs.fileInput.click();
     },
-    ...mapActions(["addBand", "fetchBands"]),
+    ...mapActions(["addBand"]),
 
     onSelectFile() {
       const input = this.$refs.fileInput;
