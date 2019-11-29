@@ -3,7 +3,9 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/add">Add Band</router-link> |
-      <router-link to="/test">Bands List</router-link>
+      <router-link to="/list">Bands List</router-link> |
+      <router-link to="/login">Login</router-link> |
+      <router-link to="/register">Register</router-link> 
     </div>
     <router-view />
   </div>
@@ -17,9 +19,7 @@ export default {
     // 'add-band': AddBand,
   },
   data() {
-    return {
-     
-    };
+    return {};
   }
 };
 </script>

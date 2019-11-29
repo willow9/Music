@@ -4,19 +4,34 @@ import axios from "axios";
 import firebase from "./../../firebase/firebaseInit";
 
 const state = {
-  bands: []
+  bands: [],
+  user: null
 };
 
 const getters = {
-  allBands: state => state.bands
+  allBands: state => state.bands,
+  user: state => state.user
 };
 
 const actions = {
+  registerUser({ commit }, credentials) {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(credentials.email, credentials.password)
+      .then(data => {
+        const newUser = {
+          id: data.user.uid
+        };
+        console.log(data.user.uid)
+        commit('setUser', newUser)
+      }).catch(error=> {console.log(error)}
+      );
+
+
+  },
+
   addBand({ commit }, band) {
-    
-
     let key;
-
     firebase
       .database()
       .ref("bands")
@@ -42,11 +57,10 @@ const actions = {
             .child(key)
             .update({ imageUrl: downloadUrl })
             .then(() => {
-              commit("newBand", {...band, id: key, imageUrl:downloadUrl})
+              commit("newBand", { ...band, id: key, imageUrl: downloadUrl });
             });
         });
       });
-
   },
 
   fetchBands({ commit }) {
@@ -83,7 +97,8 @@ const actions = {
 
 const mutations = {
   newBand: (state, band) => state.bands.shift(band),
-  setBands: (state, bands) => (state.bands = bands)
+  setBands: (state, bands) => (state.bands = bands),
+  setUser:(state, newUser) => (state.user = newUser)
 };
 
 export default {

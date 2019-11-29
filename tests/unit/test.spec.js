@@ -134,7 +134,7 @@ describe("BandsList.vue", () => {
     const cards = wrapper.findAll(".card-text");
     const card = cards.at(0).text();
 
-    expect(cards.length).toBe(1);
+    expect(cards).toHaveLength(1);
     expect(card).toContain("name");
     expect(card).toContain("rock");
   });
