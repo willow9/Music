@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>Add Band</h1>
-    <b-container>
+    <h3 v-if="!user">Only signed in user can add new band</h3>
+    <b-container v-if="user">
       <b-row>
         <b-col>
           <div
@@ -27,7 +28,8 @@
               <b-form-input
                 v-model="form.name"
                 required
-                placeholder="Enter band name" name
+                placeholder="Enter band name"
+                name
               ></b-form-input>
             </b-form-group>
 
@@ -92,13 +94,12 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       preview: false,
       imageData: null,
-
       form: {
         name: "",
         description: "",
@@ -116,7 +117,9 @@ export default {
         this.form.genre.length > 0 &&
         this.form.formed !== ""
       );
-    }
+    },
+    ...mapGetters(["user"]),
+
   },
   methods: {
     chooseImage() {

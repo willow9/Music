@@ -22,12 +22,41 @@ const actions = {
         const newUser = {
           id: data.user.uid
         };
-        console.log(data.user.uid)
-        commit('setUser', newUser)
-      }).catch(error=> {console.log(error)}
-      );
+        console.log(data.user.uid);
+        commit("setUser", newUser);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
 
+  signInUser({ commit }, credentials) {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(credentials.email, credentials.password)
+      .then(data => {
+        const newUser = {
+          id: data.user.uid
+        };
+        console.log(data.user.uid);
+        commit("setUser", newUser);
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+  },
 
+  signOutUser({ commit }) {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        console.log("user is signed out");
+        commit("setUser", null);
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
   },
 
   addBand({ commit }, band) {
@@ -98,7 +127,7 @@ const actions = {
 const mutations = {
   newBand: (state, band) => state.bands.shift(band),
   setBands: (state, bands) => (state.bands = bands),
-  setUser:(state, newUser) => (state.user = newUser)
+  setUser: (state, newUser) => (state.user = newUser)
 };
 
 export default {

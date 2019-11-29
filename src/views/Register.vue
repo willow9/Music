@@ -5,7 +5,6 @@
       <b-container>
         <b-row>
           <b-col sm="6" offset="3">
-            <h3>Register</h3>
             <b-form @submit.prevent="register">
               <b-form-group
                 id="input-group-1"

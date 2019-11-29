@@ -22,22 +22,67 @@ describe("App.vue", () => {
 
 describe("AddBand.vue", () => {
   it("renders a vue instance", () => {
-    const wrapper = shallowMount(AddBand, { localVue });
+    const wrapper = shallowMount(AddBand, {
+      localVue,
+      computed: {
+        user: jest.fn(() => {
+          return "user";
+        })
+      }
+    });
+
     expect(wrapper.isVueInstance).toBeTruthy();
   });
 
-  it("AddBand component contains form", () => {
-    const wrapper = shallowMount(AddBand, { localVue });
+  it("AddBand component renders form for signed in users", () => {
+    const wrapper = shallowMount(AddBand, {
+      localVue,
+      computed: {
+        user: jest.fn(() => {
+          return "user";
+        })
+      }
+    });
+
     expect(wrapper.contains("b-form-stub")).toBe(true);
   });
 
+  it("AddBand component renders message for not signed in users and doesn't renders form", () => {
+    const wrapper = shallowMount(AddBand, {
+      localVue,
+      computed: {
+        user: jest.fn(() => {
+          return false;
+        })
+      }
+    });
+
+    expect(wrapper.find('h3').text()).toBe('Only signed in user can add new band');
+    expect(wrapper.contains("b-form-stub")).toBe(false);
+  });
+
   it("submit button initialy is disabled", () => {
-    const wrapper = shallowMount(AddBand, { localVue });
+    const wrapper = shallowMount(AddBand, {
+      localVue,
+      computed: {
+        user: jest.fn(() => {
+          return "user";
+        })
+      }
+    });
+
     expect(wrapper.vm.isFormValid).toBe(false);
   });
 
   it("when form is filled, submit button is enabled", () => {
-    const wrapper = mount(AddBand, { localVue });
+    const wrapper = mount(AddBand, {
+      localVue,
+      computed: {
+        user: jest.fn(() => {
+          return "user";
+        })
+      }
+    });
 
     const name = wrapper.find('input[type="text"]');
     name.element.value = "NiceName";
@@ -56,7 +101,14 @@ describe("AddBand.vue", () => {
   });
 
   it("preview button toggles preview", () => {
-    const wrapper = mount(AddBand, { localVue });
+    const wrapper = mount(AddBand, {
+      localVue,
+      computed: {
+        user: jest.fn(() => {
+          return "user";
+        })
+      }
+    });
 
     wrapper
       .findAll("button")
@@ -68,7 +120,14 @@ describe("AddBand.vue", () => {
   });
 
   it("form has list of years for band creation year selection", () => {
-    const wrapper = mount(AddBand, { localVue });
+    const wrapper = mount(AddBand, {
+      localVue,
+      computed: {
+        user: jest.fn(() => {
+          return "user";
+        })
+      }
+    });
     const options = wrapper.find("select").findAll("option");
     expect(options.length).toBeGreaterThan(1);
   });
@@ -76,7 +135,15 @@ describe("AddBand.vue", () => {
   it("vuex action addBand is called after submit button is clicked on filled form", () => {
     const actions = { addBand: jest.fn() };
     const store = new Vuex.Store({ actions });
-    const wrapper = mount(AddBand, { store, localVue });
+    const wrapper = mount(AddBand, {
+      localVue,
+      store,
+      computed: {
+        user: jest.fn(() => {
+          return "user";
+        })
+      }
+    });
 
     wrapper.setData({ form: { name: "name", genre: ["some"], formed: 1898 } });
     wrapper

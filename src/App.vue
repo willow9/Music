@@ -5,21 +5,33 @@
       <router-link to="/add">Add Band</router-link> |
       <router-link to="/list">Bands List</router-link> |
       <router-link to="/login">Login</router-link> |
-      <router-link to="/register">Register</router-link> 
+      <router-link to="/register">Register</router-link> |
+      <b-link @click="logOut" v-if="user">Logout</b-link> |
     </div>
     <router-view />
   </div>
 </template>
 
 <script>
-//  import AddBand from './views/AddBand'
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "app",
-  components: {
-    // 'add-band': AddBand,
-  },
+  components: {},
   data() {
     return {};
+  },
+  methods: {
+    ...mapActions(["signOutUser"]),
+
+    logOut() {
+      this.signOutUser();
+      console.log("tryna to lgout");
+
+      // this.$router.push("/");
+    }
+  },
+  computed: {
+    ...mapGetters(["user"])
   }
 };
 </script>
