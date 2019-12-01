@@ -22,7 +22,7 @@
           :img-src="band.imageUrl"
         >
           <b-card-text>
-            <h3>{{ band.name }}</h3>
+           <router-link :to="`/band/${band.id}`"> <h3>{{ band.name }}</h3></router-link>
 
             <ul>
               Genre:
@@ -33,6 +33,7 @@
             {{ band.description }}
             <p>Formed in year: {{ band.formed }}</p>
           </b-card-text>
+
         </b-card>
       </b-card-group>
     </div>

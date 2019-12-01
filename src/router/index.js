@@ -5,6 +5,7 @@ import AddBand from '../views/AddBand.vue'
 import BandsList from '../views/BandsList.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import Band from '../views/Band.vue'
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/band/:id',
+    name: 'register',
+    component: Band
   }
 ]
 
