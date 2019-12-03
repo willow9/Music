@@ -118,8 +118,7 @@ export default {
         this.form.formed !== ""
       );
     },
-    ...mapGetters(["user"]),
-
+    ...mapGetters(["user"])
   },
   methods: {
     chooseImage() {
@@ -153,6 +152,7 @@ export default {
     post() {
       this.addBand(this.form);
       this.clearForm();
+      this.preview = false;
     }
   },
 

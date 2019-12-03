@@ -9,7 +9,6 @@
                 <b-card-img
                   :src="oneBand.imageUrl"
                   class="rounded-0"
-                  
                 ></b-card-img>
               </b-col>
               <b-col md="6">
@@ -30,7 +29,7 @@
           </b-card>
         </b-col>
       </b-row>
-      <b-button variant="danger">Button</b-button>
+      <b-button @click="removeBand"  variant="danger">Button</b-button>
     </b-container>
   </div>
 </template>
@@ -43,7 +42,11 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(["fetchBands"])
+    ...mapActions(["fetchBands", "deleteBand"]),
+    removeBand(){
+      this.deleteBand(this.$route.params.id)
+
+    }
   },
   computed: {
     ...mapGetters(["allBands"]),

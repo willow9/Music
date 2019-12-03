@@ -22,7 +22,9 @@
           :img-src="band.imageUrl"
         >
           <b-card-text>
-           <router-link :to="`/band/${band.id}`"> <h3>{{ band.name }}</h3></router-link>
+            <router-link :to="`/list/${band.id}`">
+              <h3>{{ band.name }}</h3></router-link
+            >
 
             <ul>
               Genre:
@@ -33,7 +35,6 @@
             {{ band.description }}
             <p>Formed in year: {{ band.formed }}</p>
           </b-card-text>
-
         </b-card>
       </b-card-group>
     </div>
@@ -43,7 +44,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-
   data() {
     return {
       search: "",
@@ -58,13 +58,13 @@ export default {
     ...mapGetters(["allBands"]),
     filterBands() {
       return this.allBands.filter(band => {
-        if(band.genre!=undefined){
-        return (
-          band.name.match(this.search) &&
-          (this.searchGenre.some(item => band.genre.includes(item)) ||
-            this.searchGenre.length == 0)
-        );
-      } else return band.name.match(this.search)
+        if (band.genre != undefined) {
+          return (
+            band.name.match(this.search) &&
+            (this.searchGenre.some(item => band.genre.includes(item)) ||
+              this.searchGenre.length == 0)
+          );
+        } else return band.name.match(this.search);
       });
     }
   },

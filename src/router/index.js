@@ -37,8 +37,8 @@ const routes = [
     component: Register
   },
   {
-    path: '/band/:id',
-    name: 'band/:id',
+    path: '/list/:id',
+    name: 'list/:id',
     component: Band
   }
 ]

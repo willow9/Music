@@ -75,7 +75,7 @@ const actions = {
         const extension = fileName.slice(fileName.lastIndexOf("."));
         return firebase
           .storage()
-          .ref("bands/" + key + "." + extension)
+          .ref("bands/" + key + ".jpg")
           .put(file);
       })
       .then(snapshot => {
@@ -121,6 +121,28 @@ const actions = {
       );
 
     commit("setBands", bands);
+  },
+  deleteBand({ commit }, id) {
+    firebase
+      .database()
+      .ref("bands/" + id)
+      .remove()
+      .then(function() {
+        console.log("Document successfully deleted!");
+      })
+      .catch(function(error) {
+        console.error("Error removing document: ", error);
+      });
+    firebase
+      .storage()
+      .ref("bands/" + id + ".jpg")
+      .delete()
+      .then(function() {
+        console.log("picture deleted");
+      })
+      .catch(function(error) {
+        console.error("Error removing document: ", error);
+      });
   }
 };
 
