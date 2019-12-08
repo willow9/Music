@@ -1,8 +1,10 @@
 <template>
   <div>
-    <h1>Add Band</h1>
-    <h3 v-if="!user">Only signed in user can add new band</h3>
-    <b-container v-if="user">
+    <b-container>
+      <h3 v-if="!user">Only signed in user can add new band</h3>
+    </b-container>
+    <b-container v-if="!user">
+      <h1>Add Band</h1>
       <b-row>
         <b-col>
           <div
@@ -38,6 +40,7 @@
                 v-model="form.description"
                 required
                 placeholder="Enter band description"
+                rows="5"
               ></b-form-textarea>
             </b-form-group>
 
@@ -178,6 +181,8 @@ export default {
   display: block;
   width: 500px;
   height: 400px;
+  padding-bottom: 10px;
+  margin: 0 auto;
   cursor: pointer;
   background-size: cover;
   background-position: center center;
@@ -206,6 +211,7 @@ export default {
 
 .btn {
   margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 .preview {
@@ -230,5 +236,24 @@ export default {
 .preview li {
   display: inline;
   margin: 0 5px 0 0;
+}
+
+@media (max-width: 992px) {
+  .image-input {
+    max-width: 350px;
+    max-height: 300px;
+  }
+}
+@media (max-width: 776px) {
+  .image-input {
+    max-width: 300px;
+    max-height: 250px;
+  }
+}
+@media (max-width: 490px) {
+  .image-input {
+    max-width: 280px;
+    max-height: 240px;
+  }
 }
 </style>

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <b-container v-if="notificationMsg=='' && !edit">
+    <!-- Band card -->
+
+    <b-container v-if="notificationMsg == '' && !edit">
       <b-row>
         <b-col v-if="oneBand" class="card-frame" md="10" offset-md="1">
           <h1>{{ oneBand.name }}</h1>
@@ -18,12 +20,85 @@
         </b-col>
       </b-row>
       <b-button @click="removeBand" variant="danger">Delete</b-button>
+      <b-button @click="editBand" variant="primary">Edit</b-button>
     </b-container>
 
-    <b-container v-if="notificationMsg!=''"><h3>{{notificationMsg}}</h3>
+    <!-- Notifications -->
+    <b-container v-if="notificationMsg != ''"
+      ><h3>{{ notificationMsg }}</h3>
     </b-container>
 
-    <b-container v-if="edit"><h3>Editing...</h3>
+    <!-- Form for editing -->
+    <b-container v-if="edit"
+      ><h3>Editing...</h3>
+      <b-row>
+        <b-col>
+          <p>Click  on picture to change it</p>
+          <div
+            class="image-input"
+            :style="{ 'background-image': `url(${imageData})` }"
+            @click="chooseImage"
+          >
+            <span
+              v-if="!imageData"
+              class="placeholder"
+              :style="{ 'background-image': `url(${oneBand.imageUrl})` }"
+            >
+            </span>
+            <input
+              class="file-input"
+              ref="fileInput"
+              type="file"
+              @input="onSelectFile"
+            />
+          </div>
+        </b-col>
+
+        <b-col>
+          <b-form>
+            <b-form-group label="Edit band name:">
+              <b-form-input
+                v-model="oneBand.name"
+                required
+                placeholder="Enter band name"
+                name
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Edit band description:">
+              <b-form-textarea
+                rows="8"
+                v-model="oneBand.description"
+                required
+              ></b-form-textarea>
+            </b-form-group>
+
+            <b-form-group label="Edit band genre:">
+              <b-form-checkbox-group v-model="oneBand.genre">
+                <b-form-checkbox value="rock">Rock</b-form-checkbox>
+                <b-form-checkbox value="gothic">Gothic</b-form-checkbox>
+                <b-form-checkbox value="black"
+                  >Black/Death metal</b-form-checkbox
+                >
+                <b-form-checkbox value="heavy">Heavy metal</b-form-checkbox>
+                <b-form-checkbox value="other">Other</b-form-checkbox>
+              </b-form-checkbox-group>
+            </b-form-group>
+
+            <b-form-group label="Edit formation year:">
+              <b-form-select
+                v-model="oneBand.formed"
+                :options="years"
+              ></b-form-select>
+            </b-form-group>
+
+            <b-button @click.prevent="post" type="submit" variant="primary"
+              >Submit</b-button
+            >
+            <!-- <b-button type="reset" variant="danger">Reset</b-button>  -->
+          </b-form>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -35,7 +110,9 @@ export default {
   data() {
     return {
       notificationMsg: "",
-      edit:true
+      edit: false,
+      imageData: null,
+      years: []
     };
   },
 
@@ -46,6 +123,28 @@ export default {
       this.deleteBand(this.$route.params.id).then(() => {
         this.notificationMsg = this.notification();
       });
+    },
+    editBand() {
+      this.edit = true;
+    },
+    chooseImage() {
+      this.$refs.fileInput.click();
+    },
+    onSelectFile() {
+      const input = this.$refs.fileInput;
+      const files = input.files;
+
+      if (files && files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          this.imageData = e.target.result;
+        };
+        reader.readAsDataURL(files[0]);
+        this.form.rawImage = files[0];
+      }
+    },
+    post() {
+      console.log(this.oneBand);
     }
   },
   computed: {
@@ -58,10 +157,21 @@ export default {
   },
   created() {
     this.fetchBands();
+    let years = [];
+    for (let i = 1975; i <= new Date().getFullYear(); i++) {
+      years.push(i);
+    }
+    this.years = years;
   }
 };
 </script>
 <style scoped>
+
+/* legend {
+  text-align: left;
+  color: #ae8a5d;
+} */
+
 ul {
   padding: 0;
   text-align: left;
@@ -74,7 +184,15 @@ li {
 p {
   text-align: justify;
 }
+/* .col-form-label{
+  text-align: left;
+  color: #ae8a5d;
+} */
 
+.btn {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
 .container {
   margin-top: 20px;
   border: 1px dotted #ccc;
@@ -86,6 +204,38 @@ p {
   float: left;
   margin-right: 20px;
 }
+
+.image-input {
+  display: block;
+  width: 500px;
+  height: 400px;
+  margin: 0 auto;
+  padding-bottom: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center center;
+  object-fit: contain;
+}
+
+.placeholder {
+  background: #b0bcc4;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  /* color: #333; */
+  font-size: 18px;
+  font-family: Helvetica;
+  background-size: cover;
+  background-position: center center;
+}
+
+.file-input {
+  display: none;
+  object-fit: contain;
+}
 @media (min-width: 2000px) {
   .card-img {
     max-width: 500px;
@@ -95,6 +245,19 @@ p {
 @media (max-width: 2000px) {
   .card-img {
     max-width: 300px;
+  }
+}
+
+@media (max-width: 992px) {
+  .image-input {
+    max-width: 350px;
+    max-height: 300px;
+  }
+}
+@media (max-width: 776px) {
+  .image-input {
+    max-width: 300px;
+    max-height: 250px;
   }
 }
 
