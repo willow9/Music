@@ -1,27 +1,29 @@
 <template>
   <div>
-    <b-container>
+    <b-container v-if="notificationMsg=='' && !edit">
       <b-row>
         <b-col v-if="oneBand" class="card-frame" md="10" offset-md="1">
           <h1>{{ oneBand.name }}</h1>
-          <b-card-img
-            v-if="oneBand"
-            :src="oneBand.imageUrl"
-            class="rounded-0"
-          ></b-card-img>
+          <b-card-img :src="oneBand.imageUrl" class="rounded-0"></b-card-img>
           <p>{{ oneBand.description }}</p>
 
-          <ul v-if="oneBand">
+          <ul>
             Genre:
             <li v-for="genre in oneBand.genre" v-bind:key="genre">
               {{ genre }}
             </li>
           </ul>
 
-          <p v-if="oneBand">Formed in year: {{ oneBand.formed }}</p>
+          <p>Formed in year: {{ oneBand.formed }}</p>
         </b-col>
       </b-row>
-      <b-button @click="removeBand" variant="danger">Button</b-button>
+      <b-button @click="removeBand" variant="danger">Delete</b-button>
+    </b-container>
+
+    <b-container v-if="notificationMsg!=''"><h3>{{notificationMsg}}</h3>
+    </b-container>
+
+    <b-container v-if="edit"><h3>Editing...</h3>
     </b-container>
   </div>
 </template>
@@ -31,13 +33,19 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      notificationMsg: "",
+      edit:true
+    };
   },
 
   methods: {
-    ...mapActions(["fetchBands"]),
+    ...mapActions(["fetchBands", "deleteBand"]),
+    ...mapGetters(["notification"]),
     removeBand() {
-      this.deleteBand(this.$route.params.id);
+      this.deleteBand(this.$route.params.id).then(() => {
+        this.notificationMsg = this.notification();
+      });
     }
   },
   computed: {

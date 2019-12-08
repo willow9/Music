@@ -5,15 +5,18 @@ import firebase from "./../../firebase/firebaseInit";
 
 const state = {
   bands: [],
-  user: null
+  user: null,
+  notification: ""
 };
 
 const getters = {
   allBands: state => state.bands,
-  user: state => state.user
+  user: state => state.user,
+  notification: state =>state.notification
 };
 
 const actions = {
+
   registerUser({ commit }, credentials) {
     firebase
       .auth()
@@ -122,26 +125,29 @@ const actions = {
 
     commit("setBands", bands);
   },
+
   deleteBand({ commit }, id) {
     firebase
       .database()
       .ref("bands/" + id)
       .remove()
       .then(function() {
-        console.log("Document successfully deleted!");
+        // console.log("Document successfully deleted!");
+        commit("notification", "Document successfully deleted!")
       })
       .catch(function(error) {
-        console.error("Error removing document: ", error);
+        // console.error("Error removing document: ", error);
+        commit("notification", "Error removing document: "+ error)
       });
     firebase
       .storage()
       .ref("bands/" + id + ".jpg")
       .delete()
       .then(function() {
-        console.log("picture deleted");
+        // console.log("Picture deleted");
       })
       .catch(function(error) {
-        console.error("Error removing document: ", error);
+        // console.error("Error removing document: ", error);
       });
   }
 };
@@ -149,7 +155,8 @@ const actions = {
 const mutations = {
   newBand: (state, band) => state.bands.shift(band),
   setBands: (state, bands) => (state.bands = bands),
-  setUser: (state, newUser) => (state.user = newUser)
+  setUser: (state, newUser) => (state.user = newUser),
+  notification: (state, notification) => (state.notification = notification)
 };
 
 export default {
