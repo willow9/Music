@@ -2,43 +2,23 @@
   <div>
     <b-container>
       <b-row>
-        <b-col md="10" offset-md="1">
+        <b-col v-if="oneBand" class="card-frame" md="10" offset-md="1">
           <h1>{{ oneBand.name }}</h1>
-          <b-card-img :src="oneBand.imageUrl" class="rounded-0"></b-card-img>
+          <b-card-img
+            v-if="oneBand"
+            :src="oneBand.imageUrl"
+            class="rounded-0"
+          ></b-card-img>
           <p>{{ oneBand.description }}</p>
-          <ul>
+
+          <ul v-if="oneBand">
             Genre:
             <li v-for="genre in oneBand.genre" v-bind:key="genre">
               {{ genre }}
             </li>
           </ul>
-          <p>Formed in year: {{ oneBand.formed }}</p>
 
-          <!-- <b-card style="max-width: 800px;">
-            <b-row>
-              <b-col md="6">
-                <b-card-img
-                  :src="oneBand.imageUrl"
-                  class="rounded-0"
-                ></b-card-img>
-              </b-col>
-              <b-col md="6">
-                <b-card-body
-                  ><h1>{{ oneBand.name }}</h1>
-                  <b-card-text>
-                    <p>{{ oneBand.description }}</p>
-                    <ul>
-                      Genre:
-                      <li v-for="genre in oneBand.genre" v-bind:key="genre">
-                        {{ genre }}
-                      </li>
-                    </ul>
-                    <p>Formed in year: {{ oneBand.formed }}</p>
-                  </b-card-text>
-                </b-card-body>
-              </b-col>
-            </b-row>
-          </b-card> -->
+          <p v-if="oneBand">Formed in year: {{ oneBand.formed }}</p>
         </b-col>
       </b-row>
       <b-button @click="removeBand" variant="danger">Button</b-button>
@@ -74,31 +54,50 @@ export default {
 };
 </script>
 <style scoped>
+ul {
+  padding: 0;
+  text-align: left;
+}
 li {
   display: inline;
   margin: 0 5px 0 0;
   text-align: left;
 }
+p {
+  text-align: justify;
+}
 
-@media (max-width: 1900px) {
+.container {
+  margin-top: 20px;
+  border: 1px dotted #ccc;
+  background: #d8e1e796;
+  padding: 20px;
+}
+.card-img {
+  border-radius: calc(0.25rem - 1px);
+  float: left;
+  margin-right: 20px;
+}
+@media (min-width: 2000px) {
   .card-img {
     max-width: 500px;
-    border-radius: calc(0.25rem - 1px);
-    float: left;
   }
 }
-@media (max-width: 1600px) {
+
+@media (max-width: 2000px) {
   .card-img {
-    max-width: 400px;
-    border-radius: calc(0.25rem - 1px);
-    float: left;
+    max-width: 300px;
   }
 }
-@media (max-width: 900px) {
+
+@media (max-width: 550px) {
+  .card-img {
+    max-width: 250px;
+  }
+}
+@media (max-width: 450px) {
   .card-img {
     max-width: 200px;
-    border-radius: calc(0.25rem - 1px);
-    float: left;
   }
 }
 </style>
