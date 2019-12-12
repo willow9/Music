@@ -33,7 +33,7 @@
       ><h3>Editing...</h3>
       <b-row>
         <b-col>
-          <p>Click  on picture to change it</p>
+          <p>Click on picture to change it</p>
           <div
             class="image-input"
             :style="{ 'background-image': `url(${imageData})` }"
@@ -95,7 +95,12 @@
             <b-button @click.prevent="post" type="submit" variant="primary"
               >Submit</b-button
             >
-            <!-- <b-button type="reset" variant="danger">Reset</b-button>  -->
+            <b-button
+              @click.prevent="resetChanges"
+              type="reset"
+              variant="danger"
+              >Reset</b-button
+            >
           </b-form>
         </b-col>
       </b-row>
@@ -111,13 +116,14 @@ export default {
     return {
       notificationMsg: "",
       edit: false,
-      imageData: null,
-      years: []
+      imageData: "",
+      years: [],
+      rawImage: null
     };
   },
 
   methods: {
-    ...mapActions(["fetchBands", "deleteBand"]),
+    ...mapActions(["getBandById"]),
     ...mapGetters(["notification"]),
     removeBand() {
       this.deleteBand(this.$route.params.id).then(() => {
@@ -140,23 +146,26 @@ export default {
           this.imageData = e.target.result;
         };
         reader.readAsDataURL(files[0]);
-        this.form.rawImage = files[0];
+        this.rawImage = files[0];
       }
     },
     post() {
       console.log(this.oneBand);
+    },
+    resetChanges() {
+      this.getBandById(this.$route.params.id);
+      this.imageData = ''
     }
   },
   computed: {
-    ...mapGetters(["allBands"]),
+    ...mapGetters(["band"]),
     oneBand() {
-      return this.allBands.find(band => {
-        return band.id.match(this.$route.params.id);
-      });
+      return this.band;
     }
   },
   created() {
-    this.fetchBands();
+    this.getBandById(this.$route.params.id);
+
     let years = [];
     for (let i = 1975; i <= new Date().getFullYear(); i++) {
       years.push(i);
@@ -166,7 +175,6 @@ export default {
 };
 </script>
 <style scoped>
-
 /* legend {
   text-align: left;
   color: #ae8a5d;
