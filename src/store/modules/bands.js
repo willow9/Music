@@ -168,6 +168,42 @@ const actions = {
             "Gods know we tried... but  didnt find this band"
           );
       });
+  },
+
+  editBand({ commit }, payload) {
+    console.log("init");
+    firebase
+      .database()
+      .ref("bands")
+      .child(payload.id)
+      .update(payload.editedBand)
+      .then(error => {
+        if (error) {
+          console.log("bad");
+        } else {
+          if (payload.imageFile != null) {
+            firebase
+              .storage()
+              .ref("bands/" + payload.id + ".jpg")
+              .put(payload.imageFile)
+              .then(snapshot => {
+                console.log("bands list need to be updated");
+                if (!payload.editedBand.imageUrl) {
+                  snapshot.ref.getDownloadURL().then(downloadUrl => {
+                    firebase
+                      .database()
+                      .ref("bands")
+                      .child(payload.id)
+                      .update({ imageUrl: downloadUrl })
+                      .then(() => {
+                        console.log("good" + payload.editedBand.imageUrl);
+                      });
+                  });
+                } else console.log("now update band list!");
+              });
+          }
+        }
+      });
   }
 };
 
@@ -176,7 +212,13 @@ const mutations = {
   setBands: (state, bands) => (state.bands = bands),
   setUser: (state, newUser) => (state.user = newUser),
   setBand: (state, band) => (state.band = band),
-  notification: (state, notification) => (state.notification = notification)
+  notification: (state, notification) => (state.notification = notification),
+  // editBandInList: (state, band) => {
+  //  state.bands.find(b => {
+  //     return (b.id = band.id);
+  //   }).then((b)=>b.imageUrl===band.imageUrl);
+
+  // }
 };
 
 export default {

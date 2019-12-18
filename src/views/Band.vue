@@ -20,7 +20,7 @@
         </b-col>
       </b-row>
       <b-button @click="removeBand" variant="danger">Delete</b-button>
-      <b-button @click="editBand" variant="primary">Edit</b-button>
+      <b-button @click="editBandTogle" variant="primary">Edit</b-button>
     </b-container>
 
     <!-- Notifications -->
@@ -118,19 +118,19 @@ export default {
       edit: false,
       imageData: "",
       years: [],
-      rawImage: null
+      imageFile: null
     };
   },
 
   methods: {
-    ...mapActions(["getBandById"]),
+    ...mapActions(["getBandById", "editBand"]),
     ...mapGetters(["notification"]),
     removeBand() {
       this.deleteBand(this.$route.params.id).then(() => {
         this.notificationMsg = this.notification();
       });
     },
-    editBand() {
+    editBandTogle() {
       this.edit = true;
     },
     chooseImage() {
@@ -146,15 +146,15 @@ export default {
           this.imageData = e.target.result;
         };
         reader.readAsDataURL(files[0]);
-        this.rawImage = files[0];
+        this.imageFile = files[0];
       }
     },
     post() {
-      console.log(this.oneBand);
+      this.editBand({id: this.$route.params.id, editedBand: this.oneBand, imageFile:this.imageFile});
     },
     resetChanges() {
       this.getBandById(this.$route.params.id);
-      this.imageData = ''
+      this.imageData = "";
     }
   },
   computed: {
