@@ -76,7 +76,7 @@ const actions = {
       .then(key => {
         const file = band.rawImage;
         const fileName = file.name;
-        const extension = fileName.slice(fileName.lastIndexOf("."));
+        // const extension = fileName.slice(fileName.lastIndexOf("."));
         return firebase
           .storage()
           .ref("bands/" + key + ".jpg")
@@ -133,11 +133,11 @@ const actions = {
       .ref("bands/" + id)
       .remove()
       .then(function() {
-        // console.log("Document successfully deleted!");
+        console.log("Document successfully deleted!");
         commit("notification", "Puff! ... Gone!");
       })
       .catch(function(error) {
-        // console.error("Error removing document: ", error);
+        console.error("Error removing document: ", error);
         commit("notification", "Bad: " + error);
       });
     firebase
@@ -163,15 +163,11 @@ const actions = {
           band = { ...res.val(), id: res.key };
           commit("setBand", band);
         } else
-          commit(
-            "notification",
-            "Gods know we tried... but  didnt find this band"
-          );
+          commit("notification","Gods know we tried... but  didnt find this band")
       });
   },
 
   editBand({ commit }, payload) {
-    console.log("init");
     firebase
       .database()
       .ref("bands")
@@ -179,27 +175,24 @@ const actions = {
       .update(payload.editedBand)
       .then(error => {
         if (error) {
-          console.log("bad");
+          commit("notification", "Sorry.. .failed ");
         } else {
+          {commit("notification", "New description on the way to the db")}
           if (payload.imageFile != null) {
             firebase
               .storage()
               .ref("bands/" + payload.id + ".jpg")
               .put(payload.imageFile)
               .then(snapshot => {
-                console.log("bands list need to be updated");
-                if (!payload.editedBand.imageUrl) {
-                  snapshot.ref.getDownloadURL().then(downloadUrl => {
+                snapshot.ref.getDownloadURL().then(downloadUrl => {
+                  if (payload.editedBand.imageUrl != downloadUrl)
                     firebase
                       .database()
                       .ref("bands")
                       .child(payload.id)
                       .update({ imageUrl: downloadUrl })
-                      .then(() => {
-                        console.log("good" + payload.editedBand.imageUrl);
-                      });
-                  });
-                } else console.log("now update band list!");
+                      .then(() => {commit("notification", "New Picture and description on the way to db")});
+                });
               });
           }
         }
@@ -212,13 +205,7 @@ const mutations = {
   setBands: (state, bands) => (state.bands = bands),
   setUser: (state, newUser) => (state.user = newUser),
   setBand: (state, band) => (state.band = band),
-  notification: (state, notification) => (state.notification = notification),
-  // editBandInList: (state, band) => {
-  //  state.bands.find(b => {
-  //     return (b.id = band.id);
-  //   }).then((b)=>b.imageUrl===band.imageUrl);
-
-  // }
+  notification: (state, notification) => (state.notification = notification)
 };
 
 export default {

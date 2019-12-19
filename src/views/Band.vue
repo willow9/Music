@@ -29,7 +29,7 @@
     </b-container>
 
     <!-- Form for editing -->
-    <b-container v-if="edit"
+    <b-container v-if="edit && notificationMsg==''"
       ><h3>Editing...</h3>
       <b-row>
         <b-col>
@@ -123,7 +123,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getBandById", "editBand"]),
+    ...mapActions(["getBandById", "editBand", "deleteBand"]),
     ...mapGetters(["notification"]),
     removeBand() {
       this.deleteBand(this.$route.params.id).then(() => {
@@ -150,7 +150,11 @@ export default {
       }
     },
     post() {
-      this.editBand({id: this.$route.params.id, editedBand: this.oneBand, imageFile:this.imageFile});
+      this.editBand({
+        id: this.$route.params.id,
+        editedBand: this.oneBand,
+        imageFile: this.imageFile
+      }).then(() => (this.notificationMsg = this.notification()));
     },
     resetChanges() {
       this.getBandById(this.$route.params.id);
@@ -162,6 +166,7 @@ export default {
     oneBand() {
       return this.band;
     }
+    
   },
   created() {
     this.getBandById(this.$route.params.id);
@@ -200,6 +205,7 @@ p {
 .btn {
   margin-left: 10px;
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 .container {
   margin-top: 20px;
