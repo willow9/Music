@@ -76,7 +76,6 @@ const actions = {
       .then(key => {
         const file = band.rawImage;
         const fileName = file.name;
-        // const extension = fileName.slice(fileName.lastIndexOf("."));
         return firebase
           .storage()
           .ref("bands/" + key + ".jpg")
@@ -163,7 +162,10 @@ const actions = {
           band = { ...res.val(), id: res.key };
           commit("setBand", band);
         } else
-          commit("notification","Gods know we tried... but  didnt find this band")
+          commit(
+            "notification",
+            "Gods know we tried... but  didnt find this band"
+          );
       });
   },
 
@@ -177,7 +179,9 @@ const actions = {
         if (error) {
           commit("notification", "Sorry.. .failed ");
         } else {
-          {commit("notification", "New description on the way to the db")}
+          {
+            commit("notification", "New description on the way to the db");
+          }
           if (payload.imageFile != null) {
             firebase
               .storage()
@@ -191,12 +195,20 @@ const actions = {
                       .ref("bands")
                       .child(payload.id)
                       .update({ imageUrl: downloadUrl })
-                      .then(() => {commit("notification", "New Picture and description on the way to db")});
+                      .then(() => {
+                        commit(
+                          "notification",
+                          "New Picture and description on the way to db"
+                        );
+                      });
                 });
               });
           }
         }
       });
+  },
+  clearNotification({commit}){
+    commit('notification', "")
   }
 };
 

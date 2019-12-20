@@ -2,7 +2,7 @@
   <div>
     <!-- Band card -->
 
-    <b-container v-if="notificationMsg == '' && !edit">
+    <b-container v-if="notification == '' && !edit">
       <b-row>
         <b-col v-if="oneBand" class="card-frame" md="10" offset-md="1">
           <h1>{{ oneBand.name }}</h1>
@@ -24,12 +24,12 @@
     </b-container>
 
     <!-- Notifications -->
-    <b-container v-if="notificationMsg != ''"
-      ><h3>{{ notificationMsg }}</h3>
+    <b-container v-if="notification != ''"
+      ><h3>{{ notification }}</h3>
     </b-container>
 
     <!-- Form for editing -->
-    <b-container v-if="edit && notificationMsg==''"
+    <b-container v-if="edit && notification == ''"
       ><h3>Editing...</h3>
       <b-row>
         <b-col>
@@ -114,7 +114,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      notificationMsg: "",
       edit: false,
       imageData: "",
       years: [],
@@ -123,12 +122,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getBandById", "editBand", "deleteBand"]),
+    ...mapActions([
+      "getBandById",
+      "editBand",
+      "deleteBand",
+      "clearNotification"
+    ]),
     ...mapGetters(["notification"]),
     removeBand() {
-      this.deleteBand(this.$route.params.id).then(() => {
-        this.notificationMsg = this.notification();
-      });
+      this.deleteBand(this.$route.params.id).then(() => {});
     },
     editBandTogle() {
       this.edit = true;
@@ -149,24 +151,25 @@ export default {
         this.imageFile = files[0];
       }
     },
+
     post() {
       this.editBand({
         id: this.$route.params.id,
         editedBand: this.oneBand,
         imageFile: this.imageFile
-      }).then(() => (this.notificationMsg = this.notification()));
+      });
     },
+
     resetChanges() {
       this.getBandById(this.$route.params.id);
       this.imageData = "";
     }
   },
   computed: {
-    ...mapGetters(["band"]),
+    ...mapGetters(["band", "notification"]),
     oneBand() {
       return this.band;
     }
-    
   },
   created() {
     this.getBandById(this.$route.params.id);
@@ -176,6 +179,9 @@ export default {
       years.push(i);
     }
     this.years = years;
+  },
+  destroyed() {
+    this.clearNotification();
   }
 };
 </script>
