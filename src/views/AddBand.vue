@@ -1,9 +1,17 @@
 <template>
   <div>
-    <b-container>
-      <h3 v-if="!user">Only signed in user can add new band</h3>
+    <b-container class="notification" v-if="!user">
+      <h3>
+        Hey, first let's get to know each other, please login or register.
+      </h3>
     </b-container>
-    <b-container v-if="!user">
+    <b-container class="notification" v-if="!formNotSubmited">
+      <h3>
+        Hurray! Your band is already in the database.
+      </h3>
+    </b-container>
+
+    <b-container v-if="user && formNotSubmited">
       <h1>Add Band</h1>
       <b-row>
         <b-col>
@@ -35,7 +43,7 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-form-group label="Enter band description">
+            <b-form-group>
               <b-form-textarea
                 v-model="form.description"
                 required
@@ -74,7 +82,9 @@
               variant="primary"
               >Submit</b-button
             >
-            <b-button type="reset" variant="danger">Reset</b-button>
+            <b-button @click.prevent="clearForm" variant="danger"
+              >Reset</b-button
+            >
           </b-form>
         </b-col>
       </b-row>
@@ -103,6 +113,7 @@ export default {
     return {
       preview: false,
       imageData: null,
+      formNotSubmited: true,
       form: {
         name: "",
         description: "",
@@ -154,8 +165,8 @@ export default {
 
     post() {
       this.addBand(this.form);
-      this.clearForm();
       this.preview = false;
+      this.formNotSubmited = false;
     }
   },
 
@@ -216,9 +227,9 @@ export default {
 
 .preview {
   border: 1px dotted #ccc;
-  text-align: justify;
   padding: 10px;
   min-height: 400px;
+  text-align: justify;
 }
 
 .preview img {
@@ -236,6 +247,16 @@ export default {
 .preview li {
   display: inline;
   margin: 0 5px 0 0;
+}
+
+.notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: unset;
+  color: #294456;
+  font-weight: bold;
 }
 
 @media (max-width: 992px) {
