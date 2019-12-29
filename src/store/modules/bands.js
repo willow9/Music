@@ -7,14 +7,16 @@ const state = {
   bands: [],
   user: null,
   notification: "",
-  band: {}
+  band: {},
+  notificationOfLogin: ""
 };
 
 const getters = {
   allBands: state => state.bands,
   user: state => state.user,
   notification: state => state.notification,
-  band: state => state.band
+  band: state => state.band,
+  notificationOfLogin: state => state.notificationOfLogin
 };
 
 const actions = {
@@ -42,11 +44,11 @@ const actions = {
         const newUser = {
           id: data.user.uid
         };
-        console.log(data.user.uid);
         commit("setUser", newUser);
+        commit("notificationOfLogin", "Wellcome, wellcome!");
       })
       .catch(error => {
-        console.log(error.message);
+        commit("notificationOfLogin", error.message);
       });
   },
 
@@ -207,8 +209,12 @@ const actions = {
         }
       });
   },
-  clearNotification({commit}){
-    commit('notification', "")
+  clearNotification({ commit }) {
+    commit("notification", "");
+  },
+
+  clearNotificationOfLogin({ commit }, payload) {
+    commit("notificationOfLogin", payload);
   }
 };
 
@@ -217,7 +223,9 @@ const mutations = {
   setBands: (state, bands) => (state.bands = bands),
   setUser: (state, newUser) => (state.user = newUser),
   setBand: (state, band) => (state.band = band),
-  notification: (state, notification) => (state.notification = notification)
+  notification: (state, notification) => (state.notification = notification),
+  notificationOfLogin: (state, notification) =>
+    (state.notificationOfLogin = notification)
 };
 
 export default {

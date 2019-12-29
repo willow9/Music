@@ -1,12 +1,18 @@
 <template>
   <div>
-    <div clas="login-container">
+    <b-container class="notification" v-if="notificationOfLogin">
+      <h3>
+        {{ this.notificationOfLogin }}
+      </h3>
+    </b-container>
+
+    <div v-if="!notificationOfLogin" clas="login-container">
       <h1>Login</h1>
       <b-container>
         <b-row>
           <b-col sm="6" offset="3">
             <b-form @submit.prevent="login">
-              <b-form-group >
+              <b-form-group>
                 <b-form-input
                   type="email"
                   required
@@ -42,26 +48,26 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["signInUser"]),
+    ...mapActions(["signInUser", "clearNotificationOfLogin"]),
     login() {
       this.signInUser({ email: this.email, password: this.password });
+      setTimeout(() => this.clearNotificationOfLogin(), 4000);
     }
   },
   computed: {
-    ...mapGetters(["user"]),
-    signedInUser() {
-      // console.log(this.user.id)
-      return this.user;
-    }
-  },
-  watch: {
-    signedInUser(value) {
-      if (value != null || value !== undefined) {
-        console.log("user is signed in")
-      }
-    }
+    ...mapGetters(["user", "notificationOfLogin"])
   }
 };
 </script>
 
-<style></style>
+<style>
+.notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: unset;
+  color: #294456;
+  font-weight: bold;
+}
+</style>
