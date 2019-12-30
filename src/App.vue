@@ -25,9 +25,6 @@ export default {
 
     logOut() {
       this.signOutUser();
-      console.log("tryna to lgout");
-
-      // this.$router.push("/");
     }
   },
   computed: {
@@ -37,9 +34,18 @@ export default {
 </script>
 
 <style>
+.notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: unset;
+  color: #294456;
+  font-weight: bold;
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
-
   text-align: center;
   color: #2c3e50;
 }

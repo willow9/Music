@@ -1,17 +1,18 @@
 <template>
   <div>
-    <div clas="login-container">
+    <b-container v-if="notificationOfLoginOrPassword" class="notification">
+      <h3>
+        {{ this.notificationOfLoginOrPassword }}
+      </h3>
+    </b-container>
+
+    <div v-if="!notificationOfLoginOrPassword" clas="login-container">
       <h1>Register</h1>
       <b-container>
         <b-row>
           <b-col sm="6" offset="3">
             <b-form @submit.prevent="register">
-              <b-form-group
-                id="input-group-1"
-                label="Email address:"
-                label-for="input-1"
-                description="We'll never share your email with anyone else."
-              >
+              <b-form-group id="input-group-1" label-for="input-1">
                 <b-form-input
                   id="input-1"
                   type="email"
@@ -22,11 +23,11 @@
               </b-form-group>
 
               <b-form-group>
-                <label for="text-password">Password</label>
                 <b-input
                   type="password"
                   id="text-password"
                   aria-describedby="password-help-block"
+                  placeholder="Enter password"
                   v-model="password"
                 ></b-input>
                 <b-form-text id="password-help-block">
@@ -54,23 +55,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["registerUser"]),
+    ...mapActions(["registerUser", "clearNotificationOfLoginOrPassword"]),
     register() {
       this.registerUser({ email: this.email, password: this.password });
+      setTimeout(() => this.clearNotificationOfLoginOrPassword(), 5000);
     }
   },
   computed: {
-    ...mapGetters(["user"]),
-    registeredUser() {
-      return this.user;
-    }
-  },
-  watch:{
-      registeredUser(value){
-          if( value !=null || value!==undefined){
-              console.log('registered')
-          }
-      }
+    ...mapGetters(["user", "notificationOfLoginOrPassword"])
   }
 };
 </script>

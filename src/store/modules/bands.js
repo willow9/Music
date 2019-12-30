@@ -8,7 +8,7 @@ const state = {
   user: null,
   notification: "",
   band: {},
-  notificationOfLogin: ""
+  notificationOfLoginOrPassword: ""
 };
 
 const getters = {
@@ -16,7 +16,7 @@ const getters = {
   user: state => state.user,
   notification: state => state.notification,
   band: state => state.band,
-  notificationOfLogin: state => state.notificationOfLogin
+  notificationOfLoginOrPassword: state => state.notificationOfLoginOrPassword
 };
 
 const actions = {
@@ -28,11 +28,11 @@ const actions = {
         const newUser = {
           id: data.user.uid
         };
-        console.log(data.user.uid);
         commit("setUser", newUser);
+        commit("notificationOfLoginOrPassword", "Wellcome, You are in!")
       })
       .catch(error => {
-        console.log(error);
+        commit("notificationOfLoginOrPassword", error.message)
       });
   },
 
@@ -45,10 +45,10 @@ const actions = {
           id: data.user.uid
         };
         commit("setUser", newUser);
-        commit("notificationOfLogin", "Wellcome, wellcome!");
+        commit("notificationOfLoginOrPassword", "Wellcome, wellcome!");
       })
       .catch(error => {
-        commit("notificationOfLogin", error.message);
+        commit("notificationOfLoginOrPassword", error.message);
       });
   },
 
@@ -57,12 +57,8 @@ const actions = {
       .auth()
       .signOut()
       .then(() => {
-        console.log("user is signed out");
         commit("setUser", null);
       })
-      .catch(error => {
-        console.log(error.message);
-      });
   },
 
   addBand({ commit }, band) {
@@ -213,8 +209,8 @@ const actions = {
     commit("notification", "");
   },
 
-  clearNotificationOfLogin({ commit }, payload) {
-    commit("notificationOfLogin", payload);
+  clearNotificationOfLoginOrPassword({ commit }, payload) {
+    commit("notificationOfLoginOrPassword", payload);
   }
 };
 
@@ -224,8 +220,8 @@ const mutations = {
   setUser: (state, newUser) => (state.user = newUser),
   setBand: (state, band) => (state.band = band),
   notification: (state, notification) => (state.notification = notification),
-  notificationOfLogin: (state, notification) =>
-    (state.notificationOfLogin = notification)
+  notificationOfLoginOrPassword: (state, notification) =>
+    (state.notificationOfLoginOrPassword = notification)
 };
 
 export default {
