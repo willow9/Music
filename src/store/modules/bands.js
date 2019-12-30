@@ -1,14 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-import axios from "axios";
 import firebase from "./../../firebase/firebaseInit";
 
 const state = {
   bands: [],
   user: null,
   notification: "",
-  band: {},
-  notificationOfLoginOrPassword: ""
+  band: {}
 };
 
 const getters = {
@@ -29,10 +27,10 @@ const actions = {
           id: data.user.uid
         };
         commit("setUser", newUser);
-        commit("notificationOfLoginOrPassword", "Wellcome, You are in!")
+        commit("notification", "Wellcome, You are in!");
       })
       .catch(error => {
-        commit("notificationOfLoginOrPassword", error.message)
+        commit("notification", error.message);
       });
   },
 
@@ -45,10 +43,10 @@ const actions = {
           id: data.user.uid
         };
         commit("setUser", newUser);
-        commit("notificationOfLoginOrPassword", "Wellcome, wellcome!");
+        commit("notification", "Wellcome, wellcome!");
       })
       .catch(error => {
-        commit("notificationOfLoginOrPassword", error.message);
+        commit("notification", error.message);
       });
   },
 
@@ -58,7 +56,7 @@ const actions = {
       .signOut()
       .then(() => {
         commit("setUser", null);
-      })
+      });
   },
 
   addBand({ commit }, band) {
@@ -94,22 +92,6 @@ const actions = {
   },
 
   fetchBands({ commit }) {
-    // const response = await axios.get(
-    //   "https://vue-blog236.firebaseio.com/bands.json"
-    // );
-    // const bands = [];
-    // Object.keys(response.data).forEach(key => {
-    //   let value = response.data[key];
-    //   bands.push(value);
-    // });
-    // const bands = [];
-    // db.collection("bands")
-    //   .get()
-    //   .then(response =>
-    //     response.forEach(doc => {
-    //       bands.push({ ...doc.data(), id: doc.id });
-    //     })
-    //   );
     const bands = [];
     firebase
       .database()
@@ -130,23 +112,17 @@ const actions = {
       .ref("bands/" + id)
       .remove()
       .then(function() {
-        console.log("Document successfully deleted!");
         commit("notification", "Puff! ... Gone!");
       })
       .catch(function(error) {
-        console.error("Error removing document: ", error);
-        commit("notification", "Bad: " + error);
+        commit("notification", "Bad: " + error.message);
       });
     firebase
       .storage()
       .ref("bands/" + id + ".jpg")
       .delete()
-      .then(function() {
-        // console.log("Picture deleted");
-      })
-      .catch(function(error) {
-        // console.error("Error removing document: ", error);
-      });
+      .then(function() {})
+      .catch(function(error) {});
   },
   getBandById({ commit }, id) {
     let band = {};
@@ -162,7 +138,7 @@ const actions = {
         } else
           commit(
             "notification",
-            "Gods know we tried... but  didnt find this band"
+            "Gods know we tried... but  did not find this band"
           );
       });
   },
@@ -175,7 +151,7 @@ const actions = {
       .update(payload.editedBand)
       .then(error => {
         if (error) {
-          commit("notification", "Sorry.. .failed ");
+          commit("notification", "Sorry... failed ");
         } else {
           {
             commit("notification", "New description on the way to the db");
@@ -194,10 +170,7 @@ const actions = {
                       .child(payload.id)
                       .update({ imageUrl: downloadUrl })
                       .then(() => {
-                        commit(
-                          "notification",
-                          "New Picture and description on the way to db"
-                        );
+                        commit("notification", "...and new picture too");
                       });
                 });
               });
@@ -207,10 +180,6 @@ const actions = {
   },
   clearNotification({ commit }) {
     commit("notification", "");
-  },
-
-  clearNotificationOfLoginOrPassword({ commit }, payload) {
-    commit("notificationOfLoginOrPassword", payload);
   }
 };
 
@@ -219,9 +188,7 @@ const mutations = {
   setBands: (state, bands) => (state.bands = bands),
   setUser: (state, newUser) => (state.user = newUser),
   setBand: (state, band) => (state.band = band),
-  notification: (state, notification) => (state.notification = notification),
-  notificationOfLoginOrPassword: (state, notification) =>
-    (state.notificationOfLoginOrPassword = notification)
+  notification: (state, notification) => (state.notification = notification)
 };
 
 export default {

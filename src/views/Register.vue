@@ -1,12 +1,12 @@
 <template>
   <div>
-    <b-container v-if="notificationOfLoginOrPassword" class="notification">
+    <b-container v-if="notification" class="notification">
       <h3>
-        {{ this.notificationOfLoginOrPassword }}
+        {{ this.notification }}
       </h3>
     </b-container>
 
-    <div v-if="!notificationOfLoginOrPassword" clas="login-container">
+    <div v-if="!notification" clas="login-container">
       <h1>Register</h1>
       <b-container>
         <b-row>
@@ -55,16 +55,15 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["registerUser", "clearNotificationOfLoginOrPassword"]),
+    ...mapActions(["registerUser", "clearNotification"]),
     register() {
       this.registerUser({ email: this.email, password: this.password });
-      setTimeout(() => this.clearNotificationOfLoginOrPassword(), 5000);
+      setTimeout(() => this.clearNotification(), 3000);
     }
   },
   computed: {
-    ...mapGetters(["user", "notificationOfLoginOrPassword"])
+    ...mapGetters(["user", "notification"])
   }
 };
 </script>
 
-<style scoped></style>

@@ -42,6 +42,7 @@ export default {
   border: unset;
   color: #294456;
   font-weight: bold;
+  
 }
 
 #app {

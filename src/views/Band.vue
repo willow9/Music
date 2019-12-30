@@ -24,7 +24,7 @@
     </b-container>
 
     <!-- Notifications -->
-    <b-container v-if="notification != ''"
+    <b-container v-if="notification != ''" class="notification"
       ><h3>{{ notification }}</h3>
     </b-container>
 
@@ -128,7 +128,6 @@ export default {
       "deleteBand",
       "clearNotification"
     ]),
-    ...mapGetters(["notification"]),
     removeBand() {
       this.deleteBand(this.$route.params.id).then(() => {});
     },
@@ -186,10 +185,6 @@ export default {
 };
 </script>
 <style scoped>
-/* legend {
-  text-align: left;
-  color: #ae8a5d;
-} */
 
 ul {
   padding: 0;
@@ -203,10 +198,6 @@ li {
 p {
   text-align: justify;
 }
-/* .col-form-label{
-  text-align: left;
-  color: #ae8a5d;
-} */
 
 .btn {
   margin-left: 10px;
@@ -243,9 +234,6 @@ p {
   width: 100%;
   height: 100%;
   display: flex;
-  /* justify-content: center;
-  align-items: center; */
-  /* color: #333; */
   font-size: 18px;
   font-family: Helvetica;
   background-size: cover;
