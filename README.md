@@ -1,6 +1,7 @@
 # music
 Application for adding music bands to database, editing descriptions and searching  band by certain parameters.
-music-of-fire.web.app 
+
+https://music-of-fire.web.app/
 
 ## Project setup
 ```
