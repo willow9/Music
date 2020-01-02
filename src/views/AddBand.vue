@@ -72,9 +72,6 @@
               ></b-form-select>
             </b-form-group>
 
-            <b-button @click="preview = !preview" variant="primary"
-              >Preview</b-button
-            >
             <b-button
               @click.prevent="post"
               :disabled="!isFormValid"
@@ -90,19 +87,6 @@
       </b-row>
     </b-container>
 
-    <b-container v-if="preview" class="preview">
-      <h1>{{ form.name }}</h1>
-      <b-img :src="imageData"></b-img>
-
-      <div>
-        <p>Description: {{ form.description }}</p>
-        <ul>
-          Genre:
-          <li v-for="genre in form.genre" v-bind:key="genre">{{ genre }}</li>
-        </ul>
-        <p>Formed in year: {{ form.formed }}</p>
-      </div>
-    </b-container>
   </div>
 </template>
 
@@ -111,7 +95,6 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      preview: false,
       imageData: null,
       formNotSubmited: true,
       form: {
@@ -223,30 +206,6 @@ export default {
 .btn {
   margin-left: 10px;
   margin-bottom: 10px;
-}
-
-.preview {
-  border: 1px dotted #ccc;
-  padding: 10px;
-  min-height: 400px;
-  text-align: justify;
-}
-
-.preview img {
-  float: left;
-  margin: 10px;
-  width: 300px;
-  height: 300px;
-  background: gray;
-}
-
-.preview h1 {
-  text-align: center;
-}
-
-.preview li {
-  display: inline;
-  margin: 0 5px 0 0;
 }
 
 .notification {
