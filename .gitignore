@@ -26,3 +26,6 @@ yarn-error.log*
 
 src/firebase/firebaseInit.js
 src/firebase/firebaseConfig.js
+.firebaserc
+firebase.json
+.firebase/hosting.ZGlzdA.cache

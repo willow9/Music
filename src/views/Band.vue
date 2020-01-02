@@ -28,6 +28,10 @@
       ><h3>{{ notification }}</h3>
     </b-container>
 
+    <b-modal id="modal" ok-only>
+      <p class="my-4">Sure? Then login or register first.</p>
+    </b-modal>
+
     <!-- Form for editing -->
     <b-container v-if="edit && notification == ''"
       ><h3>Editing...</h3>
@@ -129,10 +133,14 @@ export default {
       "clearNotification"
     ]),
     removeBand() {
-      this.deleteBand(this.$route.params.id).then(() => {});
+      if (this.user) {
+        this.deleteBand(this.$route.params.id).then(() => {});
+      } else this.$bvModal.show("modal");
     },
     editBandTogle() {
-      this.edit = true;
+      if (this.user) {
+        this.edit = true;
+      } else this.$bvModal.show("modal");
     },
     chooseImage() {
       this.$refs.fileInput.click();
@@ -165,7 +173,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["band", "notification"]),
+    ...mapGetters(["band", "notification", "user"]),
     oneBand() {
       return this.band;
     }
@@ -185,7 +193,6 @@ export default {
 };
 </script>
 <style scoped>
-
 ul {
   padding: 0;
   text-align: left;
