@@ -33,27 +33,30 @@
         </b-col>
 
         <b-col>
-          <b-form>
+          <b-form @submit.prevent="validateForm">
             <b-form-group>
               <b-form-input
                 v-model="form.name"
-                required
                 placeholder="Enter band name"
                 name
+                :class="{ 'is-invalid': attemptSubmit && missingName }"
               ></b-form-input>
+              <div class="invalid-feedback">No name? It can't be that way.</div>
             </b-form-group>
 
             <b-form-group>
               <b-form-textarea
                 v-model="form.description"
-                required
                 placeholder="Enter band description"
                 rows="5"
               ></b-form-textarea>
             </b-form-group>
 
             <b-form-group>
-              <b-form-checkbox-group v-model="form.genre">
+              <b-form-checkbox-group
+                v-model="form.genre"
+                :class="{ checkboxes: missingGenre && attemptSubmit }"
+              >
                 <b-form-checkbox value="rock">Rock</b-form-checkbox>
                 <b-form-checkbox value="gothic">Gothic</b-form-checkbox>
                 <b-form-checkbox value="black"
@@ -62,31 +65,28 @@
                 <b-form-checkbox value="heavy">Heavy metal</b-form-checkbox>
                 <b-form-checkbox value="other">Other</b-form-checkbox>
               </b-form-checkbox-group>
+              <p class="required-msg" v-if="missingGenre && attemptSubmit">
+                Please, select one or more.
+              </p>
             </b-form-group>
 
             <b-form-group label="Formed in year:">
               <b-form-select
                 v-model="form.formed"
                 :options="years"
-                required
+                :class="{
+                  'is-invalid': attemptSubmit && missingFormedYear
+                }"
               ></b-form-select>
+              <div class="invalid-feedback">It would be nice to know this.</div>
             </b-form-group>
 
-            <b-button
-              @click.prevent="post"
-              :disabled="!isFormValid"
-              type="submit"
-              variant="primary"
-              >Submit</b-button
-            >
-            <b-button @click.prevent="clearForm" variant="danger"
-              >Reset</b-button
-            >
+            <b-button type="submit" variant="primary">Submit</b-button>
+            <b-button @click="clearForm" variant="danger">Reset</b-button>
           </b-form>
         </b-col>
       </b-row>
     </b-container>
-
   </div>
 </template>
 
@@ -95,6 +95,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      attemptSubmit: false,
       imageData: null,
       formNotSubmited: true,
       form: {
@@ -108,21 +109,24 @@ export default {
     };
   },
   computed: {
-    isFormValid() {
-      return (
-        this.form.name !== "" &&
-        this.form.genre.length > 0 &&
-        this.form.formed !== ""
-      );
+    ...mapGetters(["user"]),
+
+    missingName() {
+      return this.form.name === "";
     },
-    ...mapGetters(["user"])
+    missingGenre() {
+      return this.form.genre.length === 0;
+    },
+    missingFormedYear() {
+      return this.form.formed === "";
+    }
   },
+
   methods: {
+    ...mapActions(["addBand"]),
     chooseImage() {
       this.$refs.fileInput.click();
     },
-    ...mapActions(["addBand"]),
-
     onSelectFile() {
       const input = this.$refs.fileInput;
       const files = input.files;
@@ -137,18 +141,24 @@ export default {
       }
     },
 
+    validateForm() {
+      this.attemptSubmit = true;
+      if (!this.missingName && !this.missingGenre && !this.missingFormedYear)
+        this.post();
+    },
+
     clearForm() {
       this.form.name = "";
       this.form.description = "";
       this.form.genre = [];
-      this.form.formed = 0;
+      this.form.formed = "";
       this.form.rowImage = null;
       this.imageData = null;
+      this.attemptSubmit = false;
     },
 
     post() {
       this.addBand(this.form);
-      this.preview = false;
       this.formNotSubmited = false;
     }
   },
@@ -198,6 +208,7 @@ export default {
 .placeholder:hover {
   background: #e0e0e0;
 }
+
 .file-input {
   display: none;
   object-fit: contain;
@@ -216,6 +227,25 @@ export default {
   border: unset;
   color: #294456;
   font-weight: bold;
+}
+
+.checkboxes {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #dc3545;
+  border-radius: 5px;
+}
+
+.required-msg {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+
+.form-control.is-invalid,
+.custom-select.is-invalid {
+  background-image: unset;
 }
 
 @media (max-width: 992px) {
