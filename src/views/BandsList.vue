@@ -28,7 +28,7 @@
 
             <ul>
               Genre:
-              <li v-for="genre in band.genre" v-bind:key="genre">
+              <li v-for="genre in band.genre" :key="genre">
                 {{ genre }} |
               </li>
             </ul>

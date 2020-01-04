@@ -135,6 +135,7 @@ export default {
     removeBand() {
       if (this.user) {
         this.deleteBand(this.$route.params.id).then(() => {});
+        setTimeout(() => this.$router.go(-1), 2000);
       } else this.$bvModal.show("modal");
     },
     editBandTogle() {
@@ -165,6 +166,7 @@ export default {
         editedBand: this.oneBand,
         imageFile: this.imageFile
       });
+      setTimeout(()=> this.$router.go(-1), 2000)
     },
 
     resetChanges() {

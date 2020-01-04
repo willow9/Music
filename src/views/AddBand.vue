@@ -92,6 +92,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -143,8 +144,10 @@ export default {
 
     validateForm() {
       this.attemptSubmit = true;
-      if (!this.missingName && !this.missingGenre && !this.missingFormedYear)
+      if (!this.missingName && !this.missingGenre && !this.missingFormedYear) {
         this.post();
+        setTimeout(() =>this.$router.push("list"), 2000);
+      }
     },
 
     clearForm() {
